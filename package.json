@@ -1,8 +1,8 @@
 {
     "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
     "name": "isotropy-adapter-react",
-    "version": "0.1.0",
-    "description": "Readt adapter for Isotropy.",
+    "version": "0.1.1",
+    "description": "React adapter for Isotropy.",
     "repository": {
         "type": "git",
         "url": "https://github.com/jeswin/isotropy-adapter-react.git"
