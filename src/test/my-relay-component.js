@@ -6,9 +6,9 @@ const relayComponent = Relay.createContainer(
     MyComponent,
     {
         fragments: {
-            ship: () => Relay.QL`
-                fragment on Ship {
-                    dname
+            greeter: () => Relay.QL`
+                fragment on QueryRoot {
+                    greeting
                 }
             `,
         }

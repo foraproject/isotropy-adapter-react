@@ -1,9 +1,9 @@
 import Relay from 'react-relay';
 
 export default {
-    name: 'User',
+    name: 'Greeter',
     queries: {
-        user: () => Relay.QL`query { node(id: $id) }`,
+        greeter: () => Relay.QL`query { greeting(id: $id) }`,
     },
     params: {
         id: '842472',

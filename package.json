@@ -1,36 +1,41 @@
 {
-  "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
-  "name": "isotropy-adapter-react",
-  "version": "0.1.1",
-  "description": "React adapter for Isotropy.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jeswin/isotropy-adapter-react.git"
-  },
-  "scripts": {
-      "update-schema": "babel-node ./dist/scripts/updateSchema.js"
-  },
-  "main": "dist/isotropy-adapter-react",
-  "license": "MIT",
-  "dependencies": {
-    "react": "*",
-    "react-dom": "*"
-  },
-  "devDependencies": {
-    "babel-polyfill": "*",
-    "babel-preset-es2015": "*",
-    "babel-preset-react": "*",
-    "babel-preset-stage-2": "*",
-    "babel-plugin-transform-class-properties": "*",
-    "babel-relay-plugin": "*",
-    "graphql": "*",
-    "mocha": "*",
-    "should": "*",
-    "react-relay": "*",
-    "isomorphic-relay": "*"
-  },
-  "keywords": [
-    "static files",
-    "server"
-  ]
+    "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
+    "name": "isotropy-adapter-react",
+    "version": "0.1.1",
+    "description": "React adapter for Isotropy.",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/jeswin/isotropy-adapter-react.git"
+    },
+    "scripts": {
+        "update-schema": "node ./dist/scripts/updateSchema.js"
+    },
+    "main": "dist/isotropy-adapter-react",
+    "license": "MIT",
+    "dependencies": {
+        "react": "*",
+        "react-dom": "*"
+    },
+    "devDependencies": {
+        "babel-polyfill": "*",
+        "babel-preset-es2015": "*",
+        "babel-preset-react": "*",
+        "babel-preset-stage-2": "*",
+        "babel-plugin-transform-class-properties": "*",
+        "babel-relay-plugin-loader": "*",
+        "graphql": "*",
+        "mocha": "*",
+        "should": "*",
+        "react-relay": "*",
+        "isomorphic-relay": "*"
+    },
+    "metadata": {
+        "graphql": {
+            "schema": "./dist/test/my-schema.json"
+        }
+    },
+    "keywords": [
+        "static files",
+        "server"
+    ]
 }
