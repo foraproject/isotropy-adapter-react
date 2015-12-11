@@ -2,9 +2,14 @@ import __polyfill from "babel-polyfill";
 import React from "react";
 import should from 'should';
 import adapter from "../isotropy-adapter-react";
+import schema from "./my-schema";
 import MyComponent from "./my-component";
 import MyRelayComponent from "./my-relay-component";
 import MyRelayRoute from "./my-relay-route";
+
+//For now the GraphQL server is going to run as a separate process.
+import express from 'express';
+import graphQLHTTP from 'express-graphql';
 
 // isomorphic-relay must be loaded before react-relay (happens in isotropy-adapter-react)
 // or you get "self is not defined"
@@ -13,6 +18,18 @@ import Relay from "react-relay";
 
 describe("Isotropy", () => {
 
+    before(() => {
+        const APP_PORT = 8080;
+
+        const app = express();
+
+        // Expose a GraphQL endpoint
+        app.use('/graphql', graphQLHTTP({schema, pretty: true}));
+
+        app.listen(APP_PORT, () => {
+            console.log(`App is now running on http://localhost:${APP_PORT}`);
+        });
+    });
 
     it(`Should serve a React UI`, () => {
         const component = MyComponent;
@@ -58,17 +75,20 @@ describe("Isotropy", () => {
         };
 
         const promise = new Promise((resolve, reject) => {
+            const graphqlUrl = `http://localhost:8080/graphql`;
+
             return adapter.renderRelayContainer({
                 relayContainer,
                 relayRoute: MyRelayRoute,
                 args: { name: "Jeswin" },
                 context,
+                graphqlUrl,
                 options
             }).then(resolve, reject);
         });
 
         return promise.then(() => {
-            context.body.should.equal("<html><body>Hello World</body></html>");
+            context.body.should.equal("<html><body>Hello ENTERPRISE</body></html>");
         });
     });
 

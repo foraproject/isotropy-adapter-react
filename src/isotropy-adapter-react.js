@@ -3,6 +3,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactDOMServer from "react-dom/server";
 import IsomorphicRelay from "isomorphic-relay";
+import Relay from 'react-relay';
+import RelayStoreData from 'react-relay/lib/RelayStoreData';
 
 export type RequestContextType = {
     body: string
@@ -35,12 +37,15 @@ const render = function(params: Object) {
 
 
 const renderRelayContainer = async function(params: Object) {
-    const { relayContainer, relayRoute, props, context, options } = params;
+    const { relayContainer, relayRoute, props, context, graphqlUrl, options } = params;
 
     const rootContainerProps = {
         Component: relayContainer,
         route: relayRoute
     };
+
+    Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(graphqlUrl));
+    RelayStoreData.getDefaultInstance().getChangeEmitter().injectBatchingStrategy(() => {});
 
     return IsomorphicRelay.prepareData(rootContainerProps).then(data => {
         const template = options.template || ((x, props) => x);

@@ -3,9 +3,11 @@ import Relay from 'react-relay';
 export default {
     name: 'Greeter',
     queries: {
-        greeter: () => Relay.QL`query { greeting(id: $id) }`,
+        ship: () => Relay.QL`
+            query getShip { ship(id: "10") }
+        `
     },
     params: {
-        id: '842472',
+        id: 200,
     }
 }
