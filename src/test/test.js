@@ -26,9 +26,7 @@ describe("Isotropy", () => {
         // Expose a GraphQL endpoint
         app.use('/graphql', graphQLHTTP({schema, pretty: true}));
 
-        app.listen(APP_PORT, () => {
-            console.log(`App is now running on http://localhost:${APP_PORT}`);
-        });
+        app.listen(APP_PORT);
     });
 
     it(`Should serve a React UI`, () => {

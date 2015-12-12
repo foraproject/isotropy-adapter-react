@@ -1,7 +1,7 @@
 {
     "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
     "name": "isotropy-adapter-react",
-    "version": "0.1.1",
+    "version": "0.2.1",
     "description": "React adapter for Isotropy.",
     "repository": {
         "type": "git",
@@ -16,13 +16,13 @@
         "react": "*",
         "react-dom": "*",
         "react-relay": "*",
-        "isomorphic-relay": "*",
-        "graphql": "*",
-        "graphql-relay": "*"
+        "isomorphic-relay": "*"
     },
     "devDependencies": {
         "express": "*",
         "express-graphql": "*",
+        "graphql": "*",
+        "graphql-relay": "*",
         "babel-polyfill": "*",
         "babel-preset-es2015": "*",
         "babel-preset-react": "*",
