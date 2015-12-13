@@ -1,11 +1,19 @@
 /* @flow */
-import type { KoaContextType } from "koa";
 import React from "react";
 import ReactDOM from "react-dom";
 import ReactDOMServer from "react-dom/server";
 import IsomorphicRelay from "isomorphic-relay";
 import Relay from 'react-relay';
 import RelayStoreData from 'react-relay/lib/RelayStoreData';
+
+type KoaContextType = {
+    code: number;
+    redirect: (url: string) => void;
+    method: string;
+    path: string;
+    status: number;
+    body: string;
+}
 
 export type ReactAdapterOptionsType = {
     renderToStaticMarkup?: boolean,
