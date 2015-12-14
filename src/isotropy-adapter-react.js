@@ -37,7 +37,9 @@ export type RenderRelayContainerArgsType = {
 }
 
 const render = function(params: RenderArgsType) : void {
-    const { component, args, context, options } = params;
+    const { component, args, context } = params;
+    const options = params.options || {};
+
     const reactElement = React.createElement(component, args);
     const template = options.template || ((x, args) => x);
     const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
