@@ -78,7 +78,7 @@ describe("Isotropy", () => {
             return adapter.renderRelayContainer({
                 relayContainer,
                 relayRoute: MyRelayRoute,
-                args: { name: "Jeswin" },
+                args: { id: "200" },
                 context,
                 graphqlUrl,
                 options

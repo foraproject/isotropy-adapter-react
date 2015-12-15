@@ -4,10 +4,7 @@ export default {
     name: 'Greeter',
     queries: {
         ship: () => Relay.QL`
-            query getShip { ship(id: "10") }
+            query getShip { ship(id:$id) }
         `
-    },
-    params: {
-        id: 200,
     }
 }

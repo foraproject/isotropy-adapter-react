@@ -44,9 +44,12 @@ const render = function(params: RenderArgsType) : void {
 const renderRelayContainer = async function(params: RenderRelayContainerArgsType) : Promise {
     const { relayContainer, relayRoute, args, context, graphqlUrl, options } = params;
 
+    const _relayRoute = Object.assign({}, relayRoute);
+    _relayRoute.params = Object.assign({}, relayRoute.params, args);
+
     const rootContainerProps = {
         Component: relayContainer,
-        route: relayRoute
+        route: _relayRoute
     };
 
     Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(graphqlUrl));
