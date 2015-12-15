@@ -1,14 +1,15 @@
 {
     "author": "Jeswin Kumar <jeswinpk@agilehead.com>",
     "name": "isotropy-adapter-react",
-    "version": "0.2.4",
+    "version": "0.2.5",
     "description": "React adapter for Isotropy.",
     "repository": {
         "type": "git",
         "url": "https://github.com/jeswin/isotropy-adapter-react.git"
     },
     "scripts": {
-        "update-schema": "node ./dist/scripts/updateSchema.js"
+        "update-schema": "node ./dist/scripts/updateSchema.js",
+        "test": "mocha dist/test/test.js"
     },
     "main": "dist/isotropy-adapter-react",
     "license": "MIT",
@@ -38,7 +39,9 @@
         }
     },
     "keywords": [
-        "static files",
-        "server"
+        "react",
+        "relay",
+        "isomorphic",
+        "isotropy"
     ]
 }
