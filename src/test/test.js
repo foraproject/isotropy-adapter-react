@@ -34,7 +34,7 @@ describe("Isotropy", () => {
         const context = {};
         const options = {
             renderToStaticMarkup: false,
-            template: x => x
+            toHtml: x => x
         };
         adapter.render({
             component,
@@ -52,7 +52,7 @@ describe("Isotropy", () => {
         const context = {};
         const options = {
             renderToStaticMarkup: true,
-            template: x => x
+            toHtml: x => x
         };
         adapter.render({
             component,
@@ -69,7 +69,7 @@ describe("Isotropy", () => {
         const context = {};
         const options = {
             renderToStaticMarkup: true,
-            template: x => x
+            toHtml: x => x
         };
 
         const promise = new Promise((resolve, reject) => {

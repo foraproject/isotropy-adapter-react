@@ -10,7 +10,7 @@ import type { KoaContextType } from "./flow/koa-types";
 
 export type ReactAdapterOptionsType = {
     renderToStaticMarkup?: boolean,
-    template: (html: string, props: Object) => string
+    toHtml: (html: string, props: Object) => string
 }
 
 export type RenderArgsType = {
@@ -34,10 +34,10 @@ const render = function(params: RenderArgsType) : void {
     const options = params.options || {};
 
     const reactElement = React.createElement(component, args);
-    const template = options.template || ((x, args) => x);
+    const toHtml = options.toHtml || ((x, args) => x);
     const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
     const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(reactElement) : ReactDOMServer.renderToStaticMarkup(reactElement);
-    context.body = template(html, args);
+    context.body = toHtml(html, args);
 };
 
 
@@ -56,11 +56,11 @@ const renderRelayContainer = async function(params: RenderRelayContainerArgsType
     RelayStoreData.getDefaultInstance().getChangeEmitter().injectBatchingStrategy(() => {});
 
     return IsomorphicRelay.prepareData(rootContainerProps).then(data => {
-        const template = options.template || ((x, args) => x);
+        const toHtml = options.toHtml || ((x, args) => x);
         const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
         const relayElement = <IsomorphicRelay.RootContainer {...rootContainerProps} />;
         const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(relayElement) : ReactDOMServer.renderToStaticMarkup(relayElement);
-        context.body = template(html, args);
+        context.body = toHtml(html, args);
     });
 };
 
