@@ -42,8 +42,7 @@ describe("Isotropy", () => {
             context,
             options
         });
-        context.body.should.startWith("<html data-reactid");
-        context.body.should.startWith("<html");
+        context.body.should.containEql("Jeswin");
     });
 
 
