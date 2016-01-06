@@ -34,7 +34,7 @@ const render = function(params: RenderArgsType) : void {
     const options = params.options || {};
 
     const reactElement = React.createElement(component, args);
-    const toHtml = options.toHtml || ((x, args) => x);
+    const toHtml = options.toHtml || ((x, args, data) => x);
     const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
     const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(reactElement) : ReactDOMServer.renderToStaticMarkup(reactElement);
     context.body = toHtml(html, args);
@@ -60,7 +60,7 @@ const renderRelayContainer = async function(params: RenderRelayContainerArgsType
         const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
         const relayElement = <IsomorphicRelay.RootContainer {...rootContainerProps} />;
         const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(relayElement) : ReactDOMServer.renderToStaticMarkup(relayElement);
-        context.body = toHtml(html, args);
+        context.body = toHtml(html, args, data);
     });
 };
 
