@@ -25,13 +25,16 @@ describe("Isotropy", () => {
 
     // Expose a GraphQL endpoint
     app.use('/graphql', graphQLHTTP({schema, pretty: true}));
-
     app.listen(APP_PORT);
   });
 
   it(`Should serve a React UI`, () => {
     const component = MyComponent;
-    const context = {};
+    const req = {};
+    const res = {
+      body: "",
+      end: function(html) { this.body = html; }
+    };
     const options = {
       renderToStaticMarkup: false,
       toHtml: x => x
@@ -39,16 +42,21 @@ describe("Isotropy", () => {
     adapter.render({
       component,
       args: { name: "Jeswin"},
-      context,
+      req,
+      res,
       options
     });
-    context.body.should.containEql("Jeswin");
+    res.body.should.containEql("Jeswin");
   });
 
 
   it(`Should serve a React UI with Static Markup`, () => {
     const component = MyComponent;
-    const context = {};
+    const req = {};
+    const res = {
+      body: "",
+      end: function(html) { this.body = html; }
+    };
     const options = {
       renderToStaticMarkup: true,
       toHtml: x => x
@@ -56,37 +64,37 @@ describe("Isotropy", () => {
     adapter.render({
       component,
       args: { name: "Jeswin" },
-      context,
+      req,
+      res,
       options
     });
-    context.body.should.equal("<html><body>Hello Jeswin</body></html>");
+    res.body.should.equal("<html><body>Hello Jeswin</body></html>");
   });
 
 
-  it(`Should serve a Relay + React UI with Static Markup`, () => {
+  it(`Should serve a Relay + React UI with Static Markup`, async () => {
     const relayContainer = MyRelayComponent;
-    const context = {};
+    const req = {};
+    const res = {
+      body: "",
+      end: function(html) { this.body = html; }
+    };
     const options = {
       renderToStaticMarkup: true,
       toHtml: x => x
     };
 
-    const promise = new Promise((resolve, reject) => {
-      const graphqlUrl = `http://localhost:8080/graphql`;
-
-      return adapter.renderRelayContainer({
-        relayContainer,
-        relayRoute: MyRelayRoute,
-        args: { id: "200" },
-        context,
-        graphqlUrl,
-        options
-      }).then(resolve, reject);
+    const graphqlUrl = `http://localhost:8080/graphql`;
+    await adapter.renderRelayContainer({
+      relayContainer,
+      relayRoute: MyRelayRoute,
+      args: { id: "200" },
+      req,
+      res,
+      graphqlUrl,
+      options
     });
-
-    return promise.then(() => {
-      context.body.should.equal("<html><body>Hello ENTERPRISE</body></html>");
-    });
+    res.body.should.equal("<html><body>Hello ENTERPRISE</body></html>");
   });
 
 });
