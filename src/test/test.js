@@ -28,73 +28,62 @@ describe("Isotropy", () => {
     app.listen(APP_PORT);
   });
 
-  it(`Should serve a React UI`, () => {
-    const component = MyComponent;
-    const req = {};
-    const res = {
-      body: "",
-      end: function(html) { this.body = html; }
-    };
-    const options = {
-      renderToStaticMarkup: false,
-      toHtml: x => x
-    };
-    adapter.render({
-      component,
-      args: { name: "Jeswin"},
-      req,
-      res,
-      options
+  const staticMarkupTypes = [false, true];
+
+  staticMarkupTypes.forEach((isStatic) => {
+    it(`Should serve a React UI${isStatic ? "with Static Markup" : ""}`, () => {
+      const component = MyComponent;
+      const req = {};
+      const res = {
+        body: "",
+        end: function(html) { this.body = html; }
+      };
+      const options = {
+        renderToStaticMarkup: isStatic,
+        toHtml: x => x
+      };
+      adapter.render({
+        component,
+        args: { name: "Jeswin"},
+        req,
+        res,
+        options
+      });
+      if (!isStatic) {
+        res.body.should.containEql("Jeswin");
+      } else {
+        res.body.should.equal("<html><body>Hello Jeswin</body></html>");
+      }
     });
-    res.body.should.containEql("Jeswin");
-  });
 
+    it(`Should serve a Relay + React UI${isStatic ? "with Static Markup" : ""}`, async () => {
+      const relayContainer = MyRelayComponent;
+      const req = {};
+      const res = {
+        body: "",
+        end: function(html) { this.body = html; }
+      };
+      const options = {
+        renderToStaticMarkup: isStatic,
+        toHtml: x => x
+      };
 
-  it(`Should serve a React UI with Static Markup`, () => {
-    const component = MyComponent;
-    const req = {};
-    const res = {
-      body: "",
-      end: function(html) { this.body = html; }
-    };
-    const options = {
-      renderToStaticMarkup: true,
-      toHtml: x => x
-    };
-    adapter.render({
-      component,
-      args: { name: "Jeswin" },
-      req,
-      res,
-      options
+      const graphqlUrl = `http://localhost:8080/graphql`;
+      await adapter.renderRelayContainer({
+        relayContainer,
+        relayRoute: MyRelayRoute,
+        args: { id: "200" },
+        req,
+        res,
+        graphqlUrl,
+        options
+      });
+      if (!isStatic) {
+        res.body.should.containEql("ENTERPRISE");
+      } else {
+        res.body.should.equal("<html><body>Hello ENTERPRISE</body></html>");
+      }
     });
-    res.body.should.equal("<html><body>Hello Jeswin</body></html>");
-  });
-
-
-  it(`Should serve a Relay + React UI with Static Markup`, async () => {
-    const relayContainer = MyRelayComponent;
-    const req = {};
-    const res = {
-      body: "",
-      end: function(html) { this.body = html; }
-    };
-    const options = {
-      renderToStaticMarkup: true,
-      toHtml: x => x
-    };
-
-    const graphqlUrl = `http://localhost:8080/graphql`;
-    await adapter.renderRelayContainer({
-      relayContainer,
-      relayRoute: MyRelayRoute,
-      args: { id: "200" },
-      req,
-      res,
-      graphqlUrl,
-      options
-    });
-    res.body.should.equal("<html><body>Hello ENTERPRISE</body></html>");
   });
 
 });
