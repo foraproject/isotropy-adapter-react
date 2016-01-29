@@ -57,13 +57,12 @@ const renderRelayContainer = async function(params: RenderRelayContainerArgsType
   Relay.injectNetworkLayer(new Relay.DefaultNetworkLayer(graphqlUrl));
   RelayStoreData.getDefaultInstance().getChangeEmitter().injectBatchingStrategy(() => {});
 
-  return IsomorphicRelay.prepareData(rootContainerProps).then(data => {
-    const toHtml = options.toHtml || ((x, args) => x);
-    const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
-    const relayElement = <IsomorphicRelay.RootContainer {...rootContainerProps} />;
-    const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(relayElement) : ReactDOMServer.renderToStaticMarkup(relayElement);
-    res.end(toHtml(html, args, data));
-  });
+  const data = await IsomorphicRelay.prepareData(rootContainerProps);
+  const toHtml = options.toHtml || ((x, args) => x);
+  const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
+  const relayElement = <IsomorphicRelay.RootContainer {...rootContainerProps} />;
+  const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(relayElement) : ReactDOMServer.renderToStaticMarkup(relayElement);
+  res.end(toHtml(html, args, data));
 };
 
 
