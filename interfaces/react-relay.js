@@ -7,6 +7,6 @@ declare module "react-relay" {
 }
 
 
-declare module "react-relay/lib/RelayStoreData" {
-  declare function getDefaultInstance(): any
+declare module "react-relay/lib/RelayStore" {
+  declare function getStoreData(): any
 }
