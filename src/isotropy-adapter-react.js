@@ -28,7 +28,7 @@ export type RenderRelayContainerArgsType = {
   toHtml: (html: string, props: Object) => string
 }
 
-const render = function(params: RenderArgsType) : void {
+const render = async function(params: RenderArgsType) : Promise {
   const { component, args, req, res, toHtml, renderToStaticMarkup } = params;
   const reactElement = React.createElement(component, args);
   const _toHtml = toHtml || ((x, args, data) => x);
