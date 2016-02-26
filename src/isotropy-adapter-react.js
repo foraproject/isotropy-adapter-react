@@ -8,17 +8,13 @@ import RelayStore from 'react-relay/lib/RelayStore';
 
 import type { IncomingMessage, ServerResponse } from "./flow/http";;
 
-export type ReactAdapterOptionsType = {
-  renderToStaticMarkup?: boolean,
-  toHtml: (html: string, props: Object) => string
-}
-
 export type RenderArgsType = {
   component: Function,
   req: IncomingMessage,
   res: ServerResponse,
   args: Object,
-  options: ReactAdapterOptionsType
+  renderToStaticMarkup?: boolean,
+  toHtml: (html: string, props: Object) => string
 }
 
 export type RenderRelayContainerArgsType = {
@@ -28,23 +24,22 @@ export type RenderRelayContainerArgsType = {
   res: ServerResponse,
   args: Object,
   graphqlUrl: string,
-  options: ReactAdapterOptionsType
+  renderToStaticMarkup?: boolean,
+  toHtml: (html: string, props: Object) => string
 }
 
 const render = function(params: RenderArgsType) : void {
-  const { component, args, req, res } = params;
-  const options = params.options || {};
-
+  const { component, args, req, res, toHtml, renderToStaticMarkup } = params;
   const reactElement = React.createElement(component, args);
-  const toHtml = options.toHtml || ((x, args, data) => x);
-  const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
-  const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(reactElement) : ReactDOMServer.renderToStaticMarkup(reactElement);
-  res.end(toHtml(html, args));
+  const _toHtml = toHtml || ((x, args, data) => x);
+  const _renderToStaticMarkup = (typeof renderToStaticMarkup !== "undefined" && renderToStaticMarkup !== null) ? renderToStaticMarkup : false;
+  const html = !_renderToStaticMarkup ? ReactDOMServer.renderToString(reactElement) : ReactDOMServer.renderToStaticMarkup(reactElement);
+  res.end(_toHtml(html, args));
 };
 
 
 const renderRelayContainer = async function(params: RenderRelayContainerArgsType) : Promise {
-  const { relayContainer, relayRoute, args, req, res, graphqlUrl, options } = params;
+  const { relayContainer, relayRoute, args, req, res, graphqlUrl, toHtml, renderToStaticMarkup } = params;
 
   const _relayRoute = Object.assign({}, relayRoute);
   _relayRoute.params = Object.assign({}, relayRoute.params, args);
@@ -58,11 +53,11 @@ const renderRelayContainer = async function(params: RenderRelayContainerArgsType
   RelayStore.getStoreData().getChangeEmitter().injectBatchingStrategy(() => {});
 
   const {data, props} = await IsomorphicRelay.prepareData(rootContainerProps);
-  const toHtml = options.toHtml || ((x, args) => x);
-  const renderToStaticMarkup = (typeof options.renderToStaticMarkup !== "undefined" && options.renderToStaticMarkup !== null) ? options.renderToStaticMarkup : false;
   const relayElement = <IsomorphicRelay.RootContainer {...props} />;
-  const html = !renderToStaticMarkup ? ReactDOMServer.renderToString(relayElement) : ReactDOMServer.renderToStaticMarkup(relayElement);
-  res.end(toHtml(html, args, data));
+  const _toHtml = toHtml || ((x, args, data) => x);
+  const _renderToStaticMarkup = (typeof renderToStaticMarkup !== "undefined" && renderToStaticMarkup !== null) ? renderToStaticMarkup : false;
+  const html = !_renderToStaticMarkup ? ReactDOMServer.renderToString(relayElement) : ReactDOMServer.renderToStaticMarkup(relayElement);
+  res.end(_toHtml(html, args, data));
 };
 
 

@@ -38,16 +38,14 @@ describe("Isotropy", () => {
         body: "",
         end: function(html) { this.body = html; }
       };
-      const options = {
-        renderToStaticMarkup: isStatic,
-        toHtml: x => x
-      };
+
       adapter.render({
         component,
         args: { name: "Jeswin"},
         req,
         res,
-        options
+        renderToStaticMarkup: isStatic,
+        toHtml: x => x
       });
       if (!isStatic) {
         res.body.should.containEql("Jeswin");
@@ -63,10 +61,6 @@ describe("Isotropy", () => {
         body: "",
         end: function(html) { this.body = html; }
       };
-      const options = {
-        renderToStaticMarkup: isStatic,
-        toHtml: x => x
-      };
 
       const graphqlUrl = `http://localhost:8080/graphql`;
       await adapter.renderRelayContainer({
@@ -76,7 +70,8 @@ describe("Isotropy", () => {
         req,
         res,
         graphqlUrl,
-        options
+        renderToStaticMarkup: isStatic,
+        toHtml: x => x
       });
       if (!isStatic) {
         res.body.should.containEql("ENTERPRISE");
