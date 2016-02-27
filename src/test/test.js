@@ -2,10 +2,7 @@ import __polyfill from "babel-polyfill";
 import React from "react";
 import should from 'should';
 import adapter from "../isotropy-adapter-react";
-import schema from "./my-schema";
 import MyComponent from "./my-component";
-import MyRelayComponent from "./my-relay-component";
-import MyRelayRoute from "./my-relay-route";
 
 //For now the GraphQL server is going to run as a separate process.
 import express from 'express';
@@ -17,16 +14,6 @@ import graphQLHTTP from 'express-graphql';
 import Relay from "react-relay";
 
 describe("Isotropy", () => {
-
-  before(() => {
-    const APP_PORT = 8080;
-
-    const app = express();
-
-    // Expose a GraphQL endpoint
-    app.use('/graphql', graphQLHTTP({schema, pretty: true}));
-    app.listen(APP_PORT);
-  });
 
   const staticMarkupTypes = [false, true];
 
@@ -51,32 +38,6 @@ describe("Isotropy", () => {
         res.body.should.containEql("Jeswin");
       } else {
         res.body.should.equal("<html><body>Hello Jeswin</body></html>");
-      }
-    });
-
-    it(`Should serve a Relay + React UI${isStatic ? "with Static Markup" : ""}`, async () => {
-      const relayContainer = MyRelayComponent;
-      const req = {};
-      const res = {
-        body: "",
-        end: function(html) { this.body = html; }
-      };
-
-      const graphqlUrl = `http://localhost:8080/graphql`;
-      await adapter.renderRelayContainer({
-        relayContainer,
-        relayRoute: MyRelayRoute,
-        args: { id: "200" },
-        req,
-        res,
-        graphqlUrl,
-        renderToStaticMarkup: isStatic,
-        toHtml: x => x
-      });
-      if (!isStatic) {
-        res.body.should.containEql("ENTERPRISE");
-      } else {
-        res.body.should.equal("<html><body>Hello ENTERPRISE</body></html>");
       }
     });
   });
