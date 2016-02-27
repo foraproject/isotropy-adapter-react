@@ -4,15 +4,6 @@ import should from 'should';
 import adapter from "../isotropy-adapter-react";
 import MyComponent from "./my-component";
 
-//For now the GraphQL server is going to run as a separate process.
-import express from 'express';
-import graphQLHTTP from 'express-graphql';
-
-// isomorphic-relay must be loaded before react-relay (happens in isotropy-adapter-react)
-// or you get "self is not defined"
-// https://github.com/denvned/isomorphic-relay/commit/5a7b673250bd338f3333d00075336ffcc73be806
-import Relay from "react-relay";
-
 describe("Isotropy", () => {
 
   const staticMarkupTypes = [false, true];
