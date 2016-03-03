@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ReactDOMServer from "react-dom/server";
 
-import type { IncomingMessage, ServerResponse } from "./flow/http";;
+import type { IncomingMessage, ServerResponse } from "isotropy-interfaces/node/http";
 
 export type RenderArgsType = {
   component: Function,
